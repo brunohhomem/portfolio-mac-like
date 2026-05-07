@@ -51,7 +51,7 @@ export const portfolio = {
     desktopLabel: "Desktop",
   },
   profile: {
-    name: "Bruno Dev",
+    name: "Bruno H. Homem",
     handle: "bruno.dev",
     initials: "BD",
     role: "Full-stack developer",

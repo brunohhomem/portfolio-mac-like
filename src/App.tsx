@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import {
   ArrowLeft,
   BatteryFull,
@@ -35,6 +36,8 @@ import type { PortfolioApp, PortfolioAppId, PortfolioIconName } from "./data/por
 type WindowState = {
   open: boolean;
   minimized: boolean;
+  x: number;
+  y: number;
   zIndex: number;
 };
 
@@ -59,6 +62,8 @@ function createInitialWindowState(): WindowStateMap {
     state[app.id] = {
       open: app.id === "about",
       minimized: false,
+      x: app.defaultWindow.x,
+      y: app.defaultWindow.y,
       zIndex: 10 + index,
     };
 
@@ -176,6 +181,17 @@ function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
     }));
   };
 
+  const moveWindow = (appId: PortfolioAppId, x: number, y: number) => {
+    setWindows((currentWindows) => ({
+      ...currentWindows,
+      [appId]: {
+        ...currentWindows[appId],
+        x,
+        y,
+      },
+    }));
+  };
+
   return (
     <main className="mac-desktop" aria-label="Developer portfolio macOS desktop">
       <TopBar
@@ -217,6 +233,7 @@ function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
               onClose={() => closeWindow(app.id)}
               onFocus={() => bringToFront(app.id)}
               onMinimize={() => minimizeWindow(app.id)}
+              onMove={(x, y) => moveWindow(app.id, x, y)}
             />
           );
         })}
@@ -329,6 +346,7 @@ function MacWindow({
   onClose,
   onFocus,
   onMinimize,
+  onMove,
   state,
 }: {
   app: PortfolioApp;
@@ -336,17 +354,59 @@ function MacWindow({
   onClose: () => void;
   onFocus: () => void;
   onMinimize: () => void;
+  onMove: (x: number, y: number) => void;
   state: WindowState;
 }) {
   const Icon = appIcons[app.icon];
+  const windowRef = useRef<HTMLElement>(null);
+
+  const startDrag = (event: ReactPointerEvent<HTMLElement>) => {
+    if (event.button !== 0 || (event.target as HTMLElement).closest("button")) {
+      return;
+    }
+
+    const windowElement = windowRef.current;
+    const layerElement = windowElement?.parentElement;
+
+    if (!windowElement || !layerElement) {
+      return;
+    }
+
+    onFocus();
+    event.preventDefault();
+
+    const windowRect = windowElement.getBoundingClientRect();
+    const layerRect = layerElement.getBoundingClientRect();
+    const pointerStart = { x: event.clientX, y: event.clientY };
+    const positionStart = { x: state.x, y: state.y };
+    const maxX = Math.max(12, layerRect.width - windowRect.width - 12);
+    const maxY = Math.max(12, layerRect.height - windowRect.height - 12);
+
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      const nextX = Math.min(Math.max(12, positionStart.x + moveEvent.clientX - pointerStart.x), maxX);
+      const nextY = Math.min(Math.max(12, positionStart.y + moveEvent.clientY - pointerStart.y), maxY);
+      onMove(nextX, nextY);
+    };
+
+    const stopDrag = () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", stopDrag);
+      window.removeEventListener("pointercancel", stopDrag);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", stopDrag);
+    window.addEventListener("pointercancel", stopDrag);
+  };
 
   return (
     <article
+      ref={windowRef}
       className={`mac-window ${isActive ? "active" : ""}`}
       style={
         {
-          "--window-x": `${app.defaultWindow.x}px`,
-          "--window-y": `${app.defaultWindow.y}px`,
+          "--window-x": `${state.x}px`,
+          "--window-y": `${state.y}px`,
           "--window-width": `${app.defaultWindow.width}px`,
           "--window-height": `${app.defaultWindow.height}px`,
           "--accent": app.accent,
@@ -355,7 +415,7 @@ function MacWindow({
       }
       onMouseDown={onFocus}
     >
-      <header className="window-titlebar">
+      <header className="window-titlebar" onPointerDown={startDrag}>
         <div className="traffic-lights" aria-label={`${app.title} controls`}>
           <button type="button" className="traffic close" aria-label="Close" onClick={onClose}>
             <X size={10} />

@@ -1,12 +1,20 @@
+@import "tailwindcss";
+
 :root {
-  color: #16202e;
-  background: #07101c;
+  color: #1d1d1f;
+  background: #000000;
   font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   --dock-height: 86px;
+  --apple-blue: #0066cc;
+  --apple-blue-focus: #0071e3;
+  --apple-ink: #1d1d1f;
+  --apple-muted: #7a7a7a;
+  --apple-hairline: #e0e0e0;
+  --apple-parchment: #f5f5f7;
 }
 
 * {
@@ -47,10 +55,8 @@ a {
   height: 100svh;
   overflow: hidden;
   background:
-    linear-gradient(132deg, rgba(255, 181, 87, 0.62) 0%, rgba(89, 178, 255, 0.4) 34%, rgba(33, 33, 67, 0.28) 100%),
-    radial-gradient(ellipse at 22% 18%, rgba(255, 241, 179, 0.95) 0%, rgba(255, 181, 112, 0.26) 28%, transparent 52%),
-    radial-gradient(ellipse at 82% 22%, rgba(83, 227, 198, 0.55) 0%, transparent 45%),
-    linear-gradient(160deg, #1a5673 0%, #31406d 38%, #6e3d65 68%, #e07855 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.12)),
+    linear-gradient(160deg, #f5f5f7 0%, #f5f5f7 42%, #272729 42%, #272729 100%);
 }
 
 .mac-desktop::before {
@@ -58,11 +64,7 @@ a {
   inset: 0;
   content: "";
   pointer-events: none;
-  background:
-    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.1) 42% 42.5%, transparent 43%),
-    linear-gradient(72deg, rgba(255, 255, 255, 0.12), transparent 40%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.12), rgba(255, 255, 255, 0.1));
-  mix-blend-mode: soft-light;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04), transparent 22%, transparent 78%, rgba(0, 0, 0, 0.04));
 }
 
 .top-bar {
@@ -271,24 +273,44 @@ a {
   align-items: center;
   height: 38px;
   flex: 0 0 auto;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(235, 240, 248, 0.66));
-  border-bottom: 1px solid rgba(158, 170, 187, 0.38);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  background: rgba(245, 245, 247, 0.92);
+  border-bottom: 1px solid var(--apple-hairline);
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
 }
 
 .traffic-lights {
   display: flex;
   align-items: center;
+  height: 100%;
   gap: 8px;
   padding-left: 13px;
+  cursor: default;
 }
 
 .traffic {
-  display: grid;
-  width: 13px;
-  height: 13px;
+  display: flex;
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  align-items: center;
+  justify-content: center;
   place-items: center;
+  padding: 0;
   color: rgba(0, 0, 0, 0);
+  line-height: 0;
   border-radius: 50%;
+}
+
+.traffic svg {
+  width: 7px;
+  height: 7px;
+  stroke-width: 3;
 }
 
 .traffic:hover,
@@ -327,7 +349,7 @@ a {
 }
 
 .window-title svg {
-  color: var(--accent);
+  color: var(--apple-blue);
   flex-shrink: 0;
 }
 
@@ -740,55 +762,55 @@ p {
   bottom: 10px;
   z-index: 180;
   display: flex;
-  align-items: end;
-  gap: 10px;
-  height: 72px;
+  align-items: center;
+  gap: 8px;
+  height: 74px;
   max-width: min(92vw, 620px);
-  padding: 9px 12px 12px;
+  padding: 10px 12px;
   transform: translateX(50%);
-  background: rgba(247, 250, 255, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 20px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.62),
-    0 18px 46px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(26px) saturate(1.45);
+  background: #000000;
+  border-radius: 18px;
+  box-shadow: none;
 }
 
 .dock-item {
   position: relative;
   display: grid;
-  width: 52px;
-  gap: 4px;
+  width: 54px;
+  height: 54px;
   place-items: center;
   padding: 0;
-  color: #ffffff;
+  color: var(--apple-ink);
   background: transparent;
+  border-radius: 14px;
 }
 
 .dock-icon {
   display: grid;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   place-items: center;
-  background:
-    linear-gradient(150deg, rgba(255, 255, 255, 0.72) 0 18%, transparent 45%),
-    linear-gradient(135deg, var(--accent), #2b3a67);
-  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: #f5f5f7;
+  border: 1px solid #e0e0e0;
   border-radius: 14px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.54),
-    0 10px 22px rgba(0, 0, 0, 0.22);
+  box-shadow: none;
   transition:
     transform 160ms ease,
-    filter 160ms ease;
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .dock-item:hover .dock-icon,
 .dock-item:focus-visible .dock-icon,
 .dock-item.active .dock-icon {
-  transform: translateY(-8px) scale(1.08);
-  filter: brightness(1.08);
+  transform: translateY(-4px);
+  background: var(--apple-blue);
+  border-color: var(--apple-blue);
+  color: #ffffff;
+}
+
+.dock-item:active .dock-icon {
+  transform: translateY(-2px) scale(0.95);
 }
 
 .dock-item:focus-visible {
@@ -799,15 +821,16 @@ p {
   position: absolute;
   bottom: 68px;
   left: 50%;
-  padding: 5px 8px;
-  color: #142033;
+  padding: 6px 9px;
+  color: var(--apple-ink);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   white-space: nowrap;
   pointer-events: none;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 6px;
-  box-shadow: 0 8px 20px rgba(13, 28, 47, 0.2);
+  background: #ffffff;
+  border: 1px solid var(--apple-hairline);
+  border-radius: 8px;
+  box-shadow: none;
   opacity: 0;
   transform: translate(-50%, 6px);
   transition:
@@ -822,9 +845,11 @@ p {
 }
 
 .dock-dot {
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  bottom: -8px;
+  width: 4px;
+  height: 4px;
+  background: var(--apple-blue);
   border-radius: 50%;
 }
 
