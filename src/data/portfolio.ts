@@ -74,7 +74,7 @@ export const portfolio = {
       shortTitle: "About",
       dockLabel: "About",
       icon: "about",
-      accent: "#32b7ff",
+      accent: "#0066cc",
       defaultWindow: { x: 72, y: 88, width: 680, height: 500 },
     },
     {
@@ -83,7 +83,7 @@ export const portfolio = {
       shortTitle: "Projects",
       dockLabel: "Projects",
       icon: "projects",
-      accent: "#ffb632",
+      accent: "#0066cc",
       defaultWindow: { x: 330, y: 126, width: 760, height: 540 },
     },
     {
@@ -92,7 +92,7 @@ export const portfolio = {
       shortTitle: "Skills",
       dockLabel: "Skills",
       icon: "skills",
-      accent: "#3ee07a",
+      accent: "#0066cc",
       defaultWindow: { x: 184, y: 172, width: 720, height: 460 },
     },
     {
@@ -101,7 +101,7 @@ export const portfolio = {
       shortTitle: "Contact",
       dockLabel: "Contact",
       icon: "contact",
-      accent: "#2d7dff",
+      accent: "#0066cc",
       defaultWindow: { x: 510, y: 96, width: 650, height: 440 },
     },
     {
@@ -110,7 +110,7 @@ export const portfolio = {
       shortTitle: "Resume",
       dockLabel: "Resume",
       icon: "resume",
-      accent: "#ff5f8f",
+      accent: "#0066cc",
       defaultWindow: { x: 236, y: 68, width: 700, height: 540 },
     },
   ] satisfies PortfolioApp[],
