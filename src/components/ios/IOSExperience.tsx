@@ -14,12 +14,15 @@ export function IOSExperience({ framed }: { framed: boolean }) {
   if (framed) {
     return (
       <section
-        className="relative aspect-[360/744] w-[360px] max-w-[calc(100vw_-_40px)] rounded-[46px] border border-[#d7d7dc] bg-[#f8f8fa] px-[5%] pb-[20%] pt-[21%] shadow-[3px_5px_30px_rgba(0,0,0,0.22)]"
+        className="relative aspect-[360/744] rounded-[46px] border border-[#d7d7dc] bg-[#f8f8fa] shadow-[3px_5px_30px_rgba(0,0,0,0.22)]"
+        style={{ width: "min(360px, calc(100vw - 40px), calc((100svh - 24px) * 360 / 744))" }}
         aria-label="White iPhone 5s portfolio mockup"
       >
         <div className="absolute left-1/2 top-[6%] size-2 -translate-x-16 rounded-full bg-[#1d1d1f]/80" aria-hidden="true" />
         <div className="absolute left-1/2 top-[7.7%] h-1.5 w-16 -translate-x-1/2 rounded-full bg-[#1d1d1f]/85" aria-hidden="true" />
-        <IOSScreen app={app} onCloseApp={() => setOpenAppId(null)} onOpenApp={setOpenAppId} rounded="rounded-[4px]" />
+        <div className="absolute left-[8.3%] top-[16.9%] h-[71.5%] w-[83.4%] overflow-hidden">
+          <IOSScreen app={app} onCloseApp={() => setOpenAppId(null)} onOpenApp={setOpenAppId} rounded="rounded-[4px]" />
+        </div>
         <div className="absolute bottom-[5.2%] left-1/2 grid size-12 -translate-x-1/2 place-items-center rounded-full border border-[#d0d0d4] bg-[#fafafc]">
           <span className="size-5 rounded-md border border-[#bfc0c5]" aria-hidden="true" />
         </div>
