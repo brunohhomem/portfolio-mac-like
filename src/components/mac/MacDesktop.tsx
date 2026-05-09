@@ -26,17 +26,12 @@ function createInitialWindowState(apps: PortfolioApp[]): WindowStateMap {
 export function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
   const { portfolio } = usePreferences();
   const clock = useClock();
-  const [catMenuOpen, setCatMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [windows, setWindows] = useState<WindowStateMap>(() => createInitialWindowState(portfolio.apps));
   const [activeAppId, setActiveAppId] = useState<PortfolioAppId>("about");
   const [zCounter, setZCounter] = useState(20);
-  const activeWindow = windows[activeAppId];
   const projectsApp = portfolio.apps.find((app) => app.id === "projects");
   const resumeApp = portfolio.apps.find((app) => app.id === "resume");
-  const activeApp =
-    activeWindow?.open && !activeWindow.minimized
-      ? portfolio.apps.find((app) => app.id === activeAppId)
-      : undefined;
 
   const bringToFront = (appId: PortfolioAppId) => {
     setZCounter((current) => {
@@ -97,12 +92,11 @@ export function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.04),transparent_22%,transparent_78%,rgba(0,0,0,0.04))]" />
 
       <TopBar
-        activeAppName={activeApp?.shortTitle ?? portfolio.desktop.finderName}
-        catMenuOpen={catMenuOpen}
+        menuOpen={menuOpen}
         clock={clock}
-        onToggleCatMenu={() => setCatMenuOpen((isOpen) => !isOpen)}
+        onToggleMenu={() => setMenuOpen((isOpen) => !isOpen)}
         onPreviewPhone={() => {
-          setCatMenuOpen(false);
+          setMenuOpen(false);
           onPreviewPhone();
         }}
       />

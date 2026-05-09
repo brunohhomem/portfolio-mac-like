@@ -48,7 +48,7 @@ export interface PortfolioContent {
   desktop: {
     finderName: string;
     menuItems: string[];
-    catMenuTitle: string;
+    brandMenuTitle: string;
     previewLabel: string;
     desktopLabel: string;
     languageLabel: string;
@@ -141,7 +141,7 @@ export const portfolios = {
     desktop: {
       finderName: "Finder",
       menuItems: ["File", "Edit", "View", "Go", "Window", "Help"],
-      catMenuTitle: "Cat Menu",
+      brandMenuTitle: "BH Menu",
       previewLabel: "iPhone Preview",
       desktopLabel: "Desktop",
       languageLabel: "Language",
@@ -307,7 +307,7 @@ export const portfolios = {
     desktop: {
       finderName: "Finder",
       menuItems: ["Arquivo", "Editar", "Visualizar", "Ir", "Janela", "Ajuda"],
-      catMenuTitle: "Menu do Gato",
+      brandMenuTitle: "Menu BH",
       previewLabel: "Prévia no iPhone",
       desktopLabel: "Desktop",
       languageLabel: "Idioma",

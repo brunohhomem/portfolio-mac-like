@@ -1,21 +1,19 @@
-import { BatteryFull, Cat, Languages, Search, Smartphone, Wifi } from "lucide-react";
+import { BatteryFull, Languages, Search, Smartphone, Wifi } from "lucide-react";
 import { useBot } from "../../context/BotContext";
 import { usePreferences } from "../../context/PreferencesContext";
 import type { Language } from "../../data/portfolio";
 import { cn } from "../../lib/cn";
 
 export function TopBar({
-  activeAppName,
-  catMenuOpen,
+  menuOpen,
   clock,
   onPreviewPhone,
-  onToggleCatMenu,
+  onToggleMenu,
 }: {
-  activeAppName: string;
-  catMenuOpen: boolean;
+  menuOpen: boolean;
   clock: string;
   onPreviewPhone: () => void;
-  onToggleCatMenu: () => void;
+  onToggleMenu: () => void;
 }) {
   const { showBotMessage } = useBot();
   const { canPersistPreferences, language, portfolio, setLanguage } = usePreferences();
@@ -39,20 +37,20 @@ export function TopBar({
           <button
             type="button"
             className="grid size-6 place-items-center rounded-md text-[#1d1d1f] hover:bg-white/70 focus-visible:bg-white focus-visible:outline-none"
-            aria-expanded={catMenuOpen}
-            aria-label={portfolio.desktop.catMenuTitle}
-            onClick={onToggleCatMenu}
+            aria-expanded={menuOpen}
+            aria-label={portfolio.desktop.brandMenuTitle}
+            onClick={onToggleMenu}
           >
-            <Cat size={18} strokeWidth={2.4} />
+            <img src="/bh-logo.png" alt="" className="size-5 rounded-sm" />
           </button>
 
-          {catMenuOpen ? (
+          {menuOpen ? (
             <div
               className="absolute left-0 top-[30px] z-50 w-56 rounded-lg border border-[#e0e0e0] bg-white p-2 text-[#1d1d1f]"
               role="menu"
             >
               <div className="flex min-h-9 items-center gap-2 rounded-md px-3 text-sm font-semibold text-[#7a7a7a]">
-                <Cat size={18} />
+                <img src="/bh-logo.png" alt="" className="size-6 rounded" />
                 <span>{portfolio.profile.handle}</span>
               </div>
               <button
@@ -94,7 +92,7 @@ export function TopBar({
           ) : null}
         </div>
 
-        <strong className="shrink-0 font-semibold">{activeAppName}</strong>
+        <strong className="shrink-0 font-semibold">{portfolio.desktop.finderName}</strong>
         <nav className="hidden min-w-0 items-center gap-1 sm:flex" aria-label="Desktop menu">
           {portfolio.desktop.menuItems.map((item) => (
             <button

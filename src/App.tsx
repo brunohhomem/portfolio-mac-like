@@ -23,7 +23,7 @@ function AppShell() {
   const [previewPhone, setPreviewPhone] = useState(false);
 
   if (isPhone) {
-    return <IOSExperience framed={false} />;
+    return <IOSExperience />;
   }
 
   if (previewPhone) {
