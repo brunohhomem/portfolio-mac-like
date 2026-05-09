@@ -1,13 +1,14 @@
 import { BatteryFull, ChevronLeft, Home, Wifi } from "lucide-react";
 import { useState } from "react";
-import { portfolio } from "../../data/portfolio";
 import type { PortfolioApp, PortfolioAppId } from "../../data/portfolio";
+import { usePreferences } from "../../context/PreferencesContext";
 import { useClock } from "../../hooks/useClock";
 import { cn } from "../../lib/cn";
 import { AppWindowContent } from "../apps/AppWindowContent";
 import { appIcons } from "../icons";
 
 export function IOSExperience({ framed }: { framed: boolean }) {
+  const { portfolio } = usePreferences();
   const [openAppId, setOpenAppId] = useState<PortfolioAppId | null>(null);
   const app = openAppId ? portfolio.apps.find((item) => item.id === openAppId) : undefined;
 
@@ -64,6 +65,7 @@ function IOSScreen({
 
 function IOSStatusBar() {
   const clock = useClock();
+  const { portfolio } = usePreferences();
   const timeLabel = clock.includes(",") ? clock.split(",").slice(-1)[0].trim() : clock;
 
   return (
@@ -79,6 +81,7 @@ function IOSStatusBar() {
 }
 
 function IOSHomeScreen({ onOpenApp }: { onOpenApp: (appId: PortfolioAppId) => void }) {
+  const { portfolio } = usePreferences();
   const pageApps = portfolio.apps.filter((app) => !["contact", "resume"].includes(app.id));
   const dockApps = portfolio.apps.filter((app) => ["contact", "resume"].includes(app.id));
 
@@ -135,6 +138,7 @@ function IOSIconButton({
 
 function IOSAppView({ app, onClose }: { app: PortfolioApp; onClose: () => void }) {
   const Icon = appIcons[app.icon];
+  const { portfolio } = usePreferences();
 
   return (
     <article className="absolute inset-x-0 bottom-0 top-[25px] z-20 flex flex-col overflow-hidden bg-[#f5f5f7]">
@@ -145,7 +149,7 @@ function IOSAppView({ app, onClose }: { app: PortfolioApp; onClose: () => void }
           onClick={onClose}
         >
           <ChevronLeft size={18} />
-          <span>Home</span>
+          <span>{portfolio.ui.homeLabel}</span>
         </button>
         <div className="flex min-w-0 items-center justify-center gap-2">
           <Icon size={17} />

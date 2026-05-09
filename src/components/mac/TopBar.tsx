@@ -1,5 +1,8 @@
-import { BatteryFull, Cat, Search, Smartphone, Wifi } from "lucide-react";
-import { portfolio } from "../../data/portfolio";
+import { BatteryFull, Cat, Languages, Search, Smartphone, Wifi } from "lucide-react";
+import { useBot } from "../../context/BotContext";
+import { usePreferences } from "../../context/PreferencesContext";
+import type { Language } from "../../data/portfolio";
+import { cn } from "../../lib/cn";
 
 export function TopBar({
   activeAppName,
@@ -14,6 +17,21 @@ export function TopBar({
   onPreviewPhone: () => void;
   onToggleCatMenu: () => void;
 }) {
+  const { showBotMessage } = useBot();
+  const { canPersistPreferences, language, portfolio, setLanguage } = usePreferences();
+  const languageOptions: Array<{ label: string; value: Language }> = [
+    { label: portfolio.desktop.englishLabel, value: "en" },
+    { label: portfolio.desktop.portugueseLabel, value: "pt" },
+  ];
+  const handleLanguageChange = (nextLanguage: Language) => {
+    if (nextLanguage === language) {
+      return;
+    }
+
+    setLanguage(nextLanguage);
+    showBotMessage(canPersistPreferences ? "language-saved" : "language-changed");
+  };
+
   return (
     <header className="relative z-50 flex h-[30px] items-center justify-between border-b border-white/40 bg-[#f5f5f7]/80 px-3 text-[13px] text-[#1d1d1f] backdrop-blur-xl">
       <div className="flex min-w-0 items-center gap-3">
@@ -46,6 +64,32 @@ export function TopBar({
                 <Smartphone size={17} />
                 <span>{portfolio.desktop.previewLabel}</span>
               </button>
+              <div className="my-2 h-px bg-[#e0e0e0]" aria-hidden="true" />
+              <div className="px-1 pb-1" role="group" aria-label={portfolio.desktop.languageLabel}>
+                <div className="mb-1 flex min-h-8 items-center gap-2 rounded-md px-2 text-xs font-semibold uppercase text-[#7a7a7a]">
+                  <Languages size={15} />
+                  <span>{portfolio.desktop.languageLabel}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-1 rounded-md bg-[#f5f5f7] p-1">
+                  {languageOptions.map((option) => (
+                    <button
+                      type="button"
+                      className={cn(
+                        "min-h-8 rounded px-2 text-xs font-semibold focus-visible:outline-none",
+                        language === option.value
+                          ? "bg-[#0066cc] text-white"
+                          : "text-[#1d1d1f] hover:bg-white focus-visible:bg-white",
+                      )}
+                      aria-checked={language === option.value}
+                      key={option.value}
+                      onClick={() => handleLanguageChange(option.value)}
+                      role="menuitemradio"
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : null}
         </div>

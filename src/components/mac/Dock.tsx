@@ -1,4 +1,4 @@
-import { portfolio } from "../../data/portfolio";
+import { usePreferences } from "../../context/PreferencesContext";
 import type { PortfolioAppId } from "../../data/portfolio";
 import { cn } from "../../lib/cn";
 import { appIcons } from "../icons";
@@ -13,6 +13,8 @@ export function Dock({
   onOpenApp: (appId: PortfolioAppId) => void;
   windows: WindowStateMap;
 }) {
+  const { portfolio } = usePreferences();
+
   return (
     <nav
       className="absolute bottom-3 right-1/2 z-40 flex h-[74px] max-w-[min(92vw,620px)] translate-x-1/2 items-center gap-2 rounded-[18px] bg-black px-3 py-2"

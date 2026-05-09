@@ -1,8 +1,10 @@
 import { ArrowLeft } from "lucide-react";
-import { portfolio } from "../../data/portfolio";
+import { usePreferences } from "../../context/PreferencesContext";
 import { IOSExperience } from "./IOSExperience";
 
 export function IPhonePreview({ onExit }: { onExit: () => void }) {
+  const { portfolio } = usePreferences();
+
   return (
     <main className="relative grid h-svh w-screen place-items-center overflow-hidden bg-black" aria-label="iPhone portfolio preview">
       <button

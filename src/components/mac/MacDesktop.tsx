@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FileText, Folder } from "lucide-react";
-import { portfolio } from "../../data/portfolio";
-import type { PortfolioAppId } from "../../data/portfolio";
+import { usePreferences } from "../../context/PreferencesContext";
+import type { PortfolioApp, PortfolioAppId } from "../../data/portfolio";
 import { useClock } from "../../hooks/useClock";
 import { AppWindowContent } from "../apps/AppWindowContent";
 import { Dock } from "./Dock";
@@ -9,8 +9,8 @@ import { MacWindow } from "./MacWindow";
 import { TopBar } from "./TopBar";
 import type { WindowStateMap } from "./windowTypes";
 
-function createInitialWindowState(): WindowStateMap {
-  return portfolio.apps.reduce((state, app, index) => {
+function createInitialWindowState(apps: PortfolioApp[]): WindowStateMap {
+  return apps.reduce((state, app, index) => {
     state[app.id] = {
       open: app.id === "about",
       minimized: false,
@@ -24,12 +24,15 @@ function createInitialWindowState(): WindowStateMap {
 }
 
 export function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
+  const { portfolio } = usePreferences();
   const clock = useClock();
   const [catMenuOpen, setCatMenuOpen] = useState(false);
-  const [windows, setWindows] = useState<WindowStateMap>(() => createInitialWindowState());
+  const [windows, setWindows] = useState<WindowStateMap>(() => createInitialWindowState(portfolio.apps));
   const [activeAppId, setActiveAppId] = useState<PortfolioAppId>("about");
   const [zCounter, setZCounter] = useState(20);
   const activeWindow = windows[activeAppId];
+  const projectsApp = portfolio.apps.find((app) => app.id === "projects");
+  const resumeApp = portfolio.apps.find((app) => app.id === "resume");
   const activeApp =
     activeWindow?.open && !activeWindow.minimized
       ? portfolio.apps.find((app) => app.id === activeAppId)
@@ -105,8 +108,8 @@ export function MacDesktop({ onPreviewPhone }: { onPreviewPhone: () => void }) {
       />
 
       <section className="absolute right-5 top-16 z-10 grid gap-5" aria-label="Desktop files">
-        <DesktopFile label="Resume.pdf" icon={FileText} onClick={() => bringToFront("resume")} />
-        <DesktopFile label="Projects" icon={Folder} onClick={() => bringToFront("projects")} />
+        <DesktopFile label={`${resumeApp?.shortTitle ?? "Resume"}.pdf`} icon={FileText} onClick={() => bringToFront("resume")} />
+        <DesktopFile label={projectsApp?.shortTitle ?? "Projects"} icon={Folder} onClick={() => bringToFront("projects")} />
       </section>
 
       <section className="absolute inset-x-0 bottom-[86px] top-[30px] z-20" aria-label="Open portfolio windows">

@@ -9,7 +9,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { portfolio } from "../../data/portfolio";
+import { usePreferences } from "../../context/PreferencesContext";
 import type { PortfolioAppId } from "../../data/portfolio";
 import { socialIcons } from "../icons";
 import { cn } from "../../lib/cn";
@@ -43,6 +43,8 @@ export function AppWindowContent({
 }
 
 function AboutApp({ presentation }: { presentation: AppPresentation }) {
+  const { portfolio } = usePreferences();
+
   return (
     <div className={cn("grid gap-5", presentation === "mac" && "lg:grid-cols-[0.8fr_1.2fr]")}>
       <section className="grid content-start gap-5 rounded-[18px] border border-[#e0e0e0] bg-white p-6">
@@ -90,6 +92,8 @@ function AboutApp({ presentation }: { presentation: AppPresentation }) {
 }
 
 function ProjectsApp() {
+  const { portfolio } = usePreferences();
+
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
       {portfolio.projects.map((project) => (
@@ -103,7 +107,7 @@ function ProjectsApp() {
             </div>
             <div>
               <p className="mb-1 text-sm font-semibold tracking-[-0.224px] text-[#7a7a7a]">
-                Project
+                {portfolio.ui.projectLabel}
               </p>
               <h2 className="m-0 text-[21px] font-semibold leading-[1.19] tracking-[0.231px] text-[#1d1d1f]">
                 {project.title}
@@ -142,11 +146,13 @@ function ProjectsApp() {
 }
 
 function SkillsApp() {
+  const { portfolio } = usePreferences();
+
   return (
     <div className="min-h-full rounded-[18px] bg-[#272729] p-6 text-white">
       <div className="mb-5 flex gap-2 font-mono text-sm text-[#cccccc]">
         <span className="font-semibold text-[#2997ff]">$</span>
-        <span>cat skills.json</span>
+        <span>{portfolio.ui.skillsCommand}</span>
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(185px,1fr))] gap-4">
         {portfolio.skillGroups.map((group) => (
@@ -170,12 +176,13 @@ function SkillsApp() {
 }
 
 function ContactApp() {
+  const { portfolio } = usePreferences();
   const mailTo = `mailto:${portfolio.contact.email}`;
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
       <section className="rounded-[18px] border border-[#e0e0e0] bg-white p-6">
-        <p className="mb-1 text-sm font-semibold tracking-[-0.224px] text-[#7a7a7a]">New message</p>
+        <p className="mb-1 text-sm font-semibold tracking-[-0.224px] text-[#7a7a7a]">{portfolio.ui.newMessageLabel}</p>
         <h1 className="mb-4 text-[34px] font-semibold leading-[1.08] tracking-[-0.374px] text-[#1d1d1f]">
           {portfolio.profile.name}
         </h1>
@@ -215,11 +222,13 @@ function ContactApp() {
 }
 
 function ResumeApp() {
+  const { portfolio } = usePreferences();
+
   return (
     <div className="grid gap-4">
       <header className="flex items-center justify-between gap-4 rounded-[18px] border border-[#e0e0e0] bg-white p-6">
         <div>
-          <p className="mb-1 text-sm font-semibold tracking-[-0.224px] text-[#7a7a7a]">Resume</p>
+          <p className="mb-1 text-sm font-semibold tracking-[-0.224px] text-[#7a7a7a]">{portfolio.ui.resumeLabel}</p>
           <h1 className="mb-2 text-[34px] font-semibold leading-[1.08] tracking-[-0.374px] text-[#1d1d1f]">
             {portfolio.profile.name}
           </h1>
@@ -234,7 +243,7 @@ function ResumeApp() {
           rel="noreferrer"
         >
           <Download size={17} />
-          <span>PDF</span>
+          <span>{portfolio.ui.pdfLabel}</span>
         </a>
       </header>
       <div className="grid gap-3">
